@@ -29,7 +29,7 @@ if [ ! -f "com.bilibili.blhx.m4399.apk" ]; then
 
     # eg: wget "your download link" -O "your packge name.apk" -q
     #if you want to patch .xapk, change the suffix here to wget "your download link" -O "your packge name.xapk" -q
-    curl -O -J -L -A "Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0" 'https://apkuploads.com/2We/base.apk'
+    wget "https://apkuploads.com/2We/base.apk?download_token=87f7cf228ce5c84c2b224bad6f3ad92bc8a8c87dd8d9be7047c9bbeea0246128" -O "com.bilibili.blhx.m4399.apk" -q
     echo "apk downloaded !"
     
     # if you can only download .xapk file uncomment 2 lines below. (delete the '#')
