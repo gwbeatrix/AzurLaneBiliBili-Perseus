@@ -23,7 +23,7 @@ if [ ! -f "com.bilibili.blhx.m4399.apk" ]; then
     echo "Get Azur Lane apk"
     # eg: wget "your download link" -O "your packge name.apk" -q
     #if you want to patch .xapk, change the suffix here to wget "your download link" -O "your packge name.xapk" -q
-    wget "https://apkuploads.com/2We/base.apk?download_token=87f7cf228ce5c84c2b224bad6f3ad92bc8a8c87dd8d9be7047c9bbeea0246128" -O "com.bilibili.blhx.m4399.apk" -q
+    wget "https://drive.google.com/uc?export=download&id=1KHTKzIcK3WeYr9PMZngH5S8MGX3IUiQA" -O "com.bilibili.blhx.m4399.apk" -q
     echo "apk downloaded !"
     
     # if you can only download .xapk file uncomment 2 lines below. (delete the '#')
@@ -41,9 +41,6 @@ echo "Copy Perseus libs"
 cp -r Perseus/. com.bilibili.blhx.m4399/lib/
 
 echo "Patching Azur Lane with Perseus"
-oncreate=$(grep -n -m 1 'onCreate' com.bilibili.blhx.m4399/smali_classes2/com/unity3d/player/UnityPlayerActivity.smali | sed  's/[0-9]*\:\(.*\)/\1/')
-sed -ir "s#\($oncreate\)#.method private static native init(Landroid/content/Context;)V\n.end method\n\n\1#" com.bilibili.blhx.m4399/smali_classes2/com/unity3d/player/UnityPlayerActivity.smali
-sed -ir "s#\($oncreate\)#\1\n    const-string v0, \"Perseus\"\n\n\    invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V\n\n    invoke-static {p0}, Lcom/unity3d/player/UnityPlayerActivity;->init(Landroid/content/Context;)V\n#" com.bilibili.blhx.m4399/smali_classes2/com/unity3d/player/UnityPlayerActivity.smali
 oncreate=$(grep -n -m 1 'onCreate' com.bilibili.blhx.m4399/smali/com/unity3d/player/UnityPlayerActivity.smali | sed  's/[0-9]*\:\(.*\)/\1/')
 sed -ir "s#\($oncreate\)#.method private static native init(Landroid/content/Context;)V\n.end method\n\n\1#" com.bilibili.blhx.m4399/smali/com/unity3d/player/UnityPlayerActivity.smali
 sed -ir "s#\($oncreate\)#\1\n    const-string v0, \"Perseus\"\n\n\    invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V\n\n    invoke-static {p0}, Lcom/unity3d/player/UnityPlayerActivity;->init(Landroid/content/Context;)V\n#" com.bilibili.blhx.m4399/smali/com/unity3d/player/UnityPlayerActivity.smali
