@@ -6,10 +6,13 @@ get_artifact_download_url () {
     local result=$(curl $api_url | jq ".assets[] | select(.name | contains(\"$2\") and contains(\"$3\") and (contains(\".sig\") | not)) | .browser_download_url")
     echo ${result:1:-1}
 }
+
 # Artifacts associative array aka dictionary
 declare -A artifacts
+
 artifacts["apkeep"]="EFForg/apkeep apkeep-x86_64-unknown-linux-gnu"
 artifacts["apktool.jar"]="iBotPeaches/Apktool apktool .jar"
+
 # Fetch all the dependencies
 for artifact in "${!artifacts[@]}"; do
     if [ ! -f $artifact ]; then
@@ -17,10 +20,13 @@ for artifact in "${!artifacts[@]}"; do
         curl -L -o $artifact $(get_artifact_download_url ${artifacts[$artifact]})
     fi
 done
+
 chmod +x apkeep
+
 # Download Azur Lane
 if [ ! -f "com.bilibili.blhx.m4399.apk" ]; then
     echo "Get Azur Lane apk"
+    
     # eg: wget "your download link" -O "your packge name.apk" -q
     #if you want to patch .xapk, change the suffix here to wget "your download link" -O "your packge name.xapk" -q
     wget "https://ln5.sync.com/dl/db9448b50/fa7zefys-gnsr53n8-cy53ry5a-iyb72zef" -O "com.bilibili.blhx.m4399.apk" -q
@@ -39,6 +45,7 @@ fi
 
 echo "Decompile Azur Lane apk"
 java -jar apktool.jar -q -f d com.bilibili.blhx.m4399.apk
+
 echo "Copy Perseus libs"
 cp -r Perseus/. com.bilibili.blhx.m4399/lib/
 
@@ -49,6 +56,7 @@ sed -ir "s#\($oncreate\)#\1\n    const-string v0, \"Perseus\"\n\n\    invoke-sta
 
 echo "Build Patched Azur Lane apk"
 java -jar apktool.jar -q -f b com.bilibili.blhx.m4399 -o build/com.bilibili.blhx.m4399.patched.apk
+
 echo "Set Github Release version"
 s=($(./apkeep -a com.bilibili.blhx.m4399 -l))
 echo "PERSEUS_VERSION=$(echo ${s[-1]})" >> $GITHUB_ENV
